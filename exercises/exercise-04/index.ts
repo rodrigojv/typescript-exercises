@@ -105,10 +105,11 @@ function logPerson(person: Person) {
 
 function filterUsers(
   persons: Person[],
-  criteria: { [P in keyof User]?: User[P] }
+  //   criteria: { [P in keyof User]?: User[Exclude<P, "type">] }
+  criteria: { [P in Exclude<keyof User, "type">]?: User[P] }
 ): User[] {
   return persons.filter(isUser).filter((user) => {
-    let criteriaKeys = Object.keys(criteria) as (keyof User)[];
+    let criteriaKeys = Object.keys(criteria) as Exclude<keyof User, "type">[];
     return criteriaKeys.every((fieldName) => {
       return user[fieldName] === criteria[fieldName];
     });
